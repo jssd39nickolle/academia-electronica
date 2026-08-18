@@ -272,4 +272,60 @@ document.addEventListener('DOMContentLoaded',()=>{
   if(document.getElementById('simScenarioName')){
     setDifficulty('easy');
   }
+  if(document.getElementById('diodo-display')){
+    const display = document.getElementById('diodo-display');
+    if (display) display.textContent = '0.642 V';
+  }
 });
+
+function setDiodePolarity(mode){
+  const label = document.getElementById('diodo-state-label');
+  const text = document.getElementById('diodo-state-text');
+  const display = document.getElementById('diodo-display');
+  if (!label || !text || !display) return;
+
+  if (mode === 'inversa') {
+    label.textContent = 'POLARIZACIÓN INVERSA';
+    text.textContent = 'Ahora ROJA pasa al CÁTODO y NEGRA pasa al ÁNODO. La pantalla cambia a OL porque normalmente no existe conducción significativa bajo estas condiciones de prueba del instrumento.';
+    display.textContent = 'OL';
+  } else {
+    label.textContent = 'POLARIZACIÓN DIRECTA';
+    text.textContent = 'En polarización directa, ROJA → ÁNODO y NEGRA → CÁTODO. La función diodo utiliza la batería interna del multímetro para establecer una corriente de prueba controlada y mide aproximadamente la caída de tensión directa VF.';
+    display.textContent = '0.642 V';
+  }
+}
+
+const diodeCases = [
+  {id:1, label:'Caso 1: Directa 0.647 V · Inversa OL', correct:'silicio', explanation:'La lectura directa cercana a 0.65 V corresponde a un diodo de silicio sano. La inversa en OL confirma que no conduce significativamente en sentido inverso.'},
+  {id:2, label:'Caso 2: Directa OL · Inversa OL', correct:'abierto', explanation:'Una lectura OL en directa y en inversa indica que el diodo está abierto: no hay conducción útil en ningún sentido.'},
+  {id:3, label:'Caso 3: Directa 0.006 V · Inversa 0.008 V', correct:'corto', explanation:'Una caída muy cercana a 0 V en ambos sentidos sugiere un diodo en cortocircuito, porque no presenta la barrera normal de unión.'},
+  {id:4, label:'Caso 4: Directa 0.31 V · Inversa OL', correct:'schottky', explanation:'Una caída directa cercana a 0.3 V es típica de un diodo Schottky, que normalmente presenta una caída más baja que un silicio convencional.'}
+];
+let currentDiodeCase = 0;
+
+function newDiodoCase(){
+  const quizCase = document.getElementById('diodo-quiz-case');
+  const result = document.getElementById('diodo-quiz-result');
+  if (!quizCase || !result) return;
+  currentDiodeCase = Math.floor(Math.random() * diodeCases.length);
+  quizCase.textContent = diodeCases[currentDiodeCase].label;
+  result.className = 'quiz-answer';
+  result.textContent = '';
+}
+
+function answerDiodoQuiz(answer){
+  const result = document.getElementById('diodo-quiz-result');
+  if (!result) return;
+  const current = diodeCases[currentDiodeCase];
+  const ok = answer === current.correct;
+  result.className = 'quiz-answer show ' + (ok ? 'correct' : 'incorrect');
+  result.textContent = (ok ? 'CORRECTO: ' : 'INCORRECTO: ') + current.explanation;
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('diodo-quiz-case')) newDiodoCase();
+  });
+} else {
+  if (document.getElementById('diodo-quiz-case')) newDiodoCase();
+}
