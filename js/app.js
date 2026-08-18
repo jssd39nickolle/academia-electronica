@@ -329,3 +329,20 @@ if (document.readyState === 'loading') {
 } else {
   if (document.getElementById('diodo-quiz-case')) newDiodoCase();
 }
+
+/* ===== DIODE VISUAL FIX ===== */
+document.addEventListener('DOMContentLoaded',()=>{
+  const diodeSection=document.getElementById('diodos');
+  if(!diodeSection) return;
+  const oldVisual=diodeSection.querySelector('.diode-axial');
+  if(oldVisual){
+    const figure=document.createElement('figure');
+    figure.style.margin='18px 0';
+    figure.style.padding='16px';
+    figure.style.border='1px solid rgba(0,229,255,.18)';
+    figure.style.borderRadius='18px';
+    figure.style.background='rgba(8,12,20,.88)';
+    figure.innerHTML='<img src="../img/diodo-referencia.jpg" alt="Diodo axial con identificación de ánodo y cátodo" style="display:block;width:100%;max-width:900px;margin:auto;border-radius:12px;background:#fff"><figcaption style="margin-top:12px;color:#a8b3c4;text-align:center"><strong style="color:#fff">Identificación física:</strong> en muchos diodos axiales, la banda marca el <strong style="color:#00e5ff">cátodo (K)</strong>; el terminal opuesto corresponde al <strong style="color:#ff4b6e">ánodo (A)</strong>.</figcaption>';
+    oldVisual.replaceWith(figure);
+  }
+});
