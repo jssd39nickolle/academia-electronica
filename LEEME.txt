@@ -1,0 +1,25 @@
+ACADEMIA ELECTRÓNICA SENA · V3.2 ADVANCED
+
+ACTUALIZACIÓN DESDE V3.1 NEON
+1. Cierre Live Server.
+2. Extraiga este ZIP.
+3. Copie TODO el contenido de academia_electronica_sena_v3_2_advanced.
+4. Péguelo sobre su proyecto actual.
+5. Reemplace los archivos.
+6. Abra index.html con Live Server.
+
+NOVEDADES V3.2
+- Banco virtual de mediciones simuladas.
+- 6 escenarios: 12 V DC, 1 kΩ, corriente LED, diodo, capacitor 100 µF y 24 VAC.
+- Fallas aleatorias.
+- Niveles: básico, intermedio y avanzado.
+- Lecturas con variación realista.
+- Casos: baja tensión, salida ausente, intermitencia, componente abierto, corto, deriva, etc.
+- El sistema bloquea configuraciones peligrosas como amperímetro en paralelo.
+- Botón para revelar la falla después del análisis.
+- Mantiene neón, videojuego, puntos, vidas, insignias y firma.
+
+FIRMA
+Diseño por Juan Sebastián Suárez Daza
+Ingeniero Mecatrónico
+Creado · Versión 3.0

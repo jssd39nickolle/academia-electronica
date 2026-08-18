@@ -1,0 +1,275 @@
+const buscar=document.getElementById('buscar');
+if(buscar){
+  const cards=[...document.querySelectorAll('[data-tags]')];
+  const empty=document.getElementById('sinResultados');
+  buscar.addEventListener('input',()=>{
+    const q=buscar.value.toLowerCase().trim(); let shown=0;
+    cards.forEach(c=>{const ok=(c.innerText+' '+c.dataset.tags).toLowerCase().includes(q);c.style.display=ok?'':'none';if(ok)shown++;});
+    empty.classList.toggle('hidden',shown!==0);
+  });
+}
+function responder(id,correcto,exp){
+  const el=document.getElementById(id);
+  el.textContent=(correcto?'✅ Correcto. ':'❌ Revise. ')+exp;
+  el.style.color=correcto?'#08763b':'#b62525';
+}
+function verificarSimulador(){
+  const objetivo=document.getElementById('simObjetivo').value;
+  const borne=document.getElementById('simBorne').value;
+  const funcion=document.getElementById('simFuncion').value;
+  const conexion=document.getElementById('simConexion').value;
+  const salida=document.getElementById('simSalida');
+  const reglas={
+    '12v': borne==='vohm'&&funcion==='vdc'&&conexion==='paralelo',
+    'res1k': borne==='vohm'&&funcion==='ohm'&&conexion==='desenergizado',
+    'ledma': borne==='ma'&&funcion==='adc'&&conexion==='serie'
+  };
+  if(reglas[objetivo]){
+    salida.textContent='✅ Configuración coherente. Ahora explique qué valor espera antes de medir.';
+    salida.style.color='#d5ee72';
+  }else{
+    salida.textContent='❌ Hay una inconsistencia entre borne, función o conexión. No mida todavía.';
+    salida.style.color='#ff8585';
+  }
+}
+const progress=document.getElementById('progressBar');
+if(progress){
+  const update=()=>{
+    const doc=document.documentElement;
+    const max=doc.scrollHeight-doc.clientHeight;
+    const pct=max>0?(doc.scrollTop/max)*100:0;
+    progress.style.width=pct+'%';
+  };
+  document.addEventListener('scroll',update,{passive:true}); update();
+}
+const navLinks=[...document.querySelectorAll('.side-nav a')];
+const sections=[...document.querySelectorAll('.lesson[id]')];
+if(navLinks.length&&sections.length){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        navLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
+      }
+    });
+  },{rootMargin:'-25% 0px -65% 0px'});
+  sections.forEach(s=>obs.observe(s));
+}
+
+
+/* ===== V3 INTERACTIVE COURSE ENGINE ===== */
+const meterParts={
+  screen:{name:'Pantalla digital',desc:'Muestra el valor medido, unidad, polaridad, indicadores y estados como AUTO, HOLD u OL.',use:'Interpretar la lectura y confirmar la unidad.',risk:'Leer solo el número y no mirar si está en V, mV, A, mA, Ω o kΩ.',rule:'Número + unidad + función siempre se interpretan juntos.'},
+  buttons:{name:'Botones de función',desc:'Según el modelo pueden activar HOLD, RANGE, SELECT, REL, MIN/MAX, iluminación u otras funciones.',use:'Cambiar subfunciones o congelar lecturas.',risk:'Activar una subfunción sin notarlo y obtener una interpretación incorrecta.',rule:'Observe los indicadores de pantalla después de pulsar un botón.'},
+  selector:{name:'Selector rotativo',desc:'Define qué magnitud intentará medir el instrumento: V, A, Ω, continuidad, diodo, capacitancia, frecuencia, etc.',use:'Seleccionar la función antes de tocar el circuito.',risk:'Elegir A cuando quería V o Ω sobre un circuito energizado.',rule:'Primero función; luego conexión.'},
+  jack10:{name:'Borne A / 10 A',desc:'Entrada destinada a rangos altos de corriente dentro de los límites del instrumento.',use:'Corriente alta cuando el procedimiento y el modelo lo permiten.',risk:'Dejar la punta aquí y después intentar medir voltaje en paralelo.',rule:'Después de medir corriente, devuelva la punta roja a V/Ω.'},
+  jackma:{name:'Borne µA / mA',desc:'Entrada protegida para corrientes pequeñas. El límite exacto depende del multímetro y su fusible.',use:'Mediciones de microamperios o miliamperios.',risk:'Superar el fusible o confundir mA con A.',rule:'Estime la corriente antes de escoger el borne.'},
+  jackcom:{name:'Borne COM',desc:'Terminal común y referencia del multímetro. Normalmente recibe la punta negra.',use:'Referencia para la mayoría de mediciones.',risk:'Cambiar la punta negra de forma innecesaria o trabajar con conexiones confusas.',rule:'Punta negra normalmente permanece en COM.'},
+  jackvohm:{name:'Borne V / Ω',desc:'Entrada habitual para voltaje, resistencia, continuidad, diodo, frecuencia y capacitancia según el modelo.',use:'La entrada roja más usada en trabajo electrónico.',risk:'Olvidar regresar aquí después de una medición de corriente.',rule:'Si no está midiendo corriente, revise primero si la roja debe estar aquí.'}
+};
+function selectMeterPart(key){
+  const p=meterParts[key]; if(!p)return;
+  document.getElementById('partTag').textContent='ZONA SELECCIONADA';
+  document.getElementById('partName').textContent=p.name;
+  document.getElementById('partDesc').textContent=p.desc;
+  document.getElementById('partUse').textContent=p.use;
+  document.getElementById('partRisk').textContent=p.risk;
+  document.getElementById('partRule').textContent=p.rule;
+}
+
+const missions=[
+ {title:'Fuente de 12 V DC',context:'Necesita comprobar si una fuente entrega aproximadamente 12 V DC.',target:{borne:'vohm',funcion:'vdc',conexion:'paralelo',estado:'energizado'},why:'Voltaje DC: COM + V/Ω, selector V⎓ y conexión en paralelo con la fuente energizada.'},
+ {title:'Resistencia de 1 kΩ',context:'Quiere verificar el valor de una resistencia retirada del circuito.',target:{borne:'vohm',funcion:'ohm',conexion:'componente',estado:'desenergizado'},why:'Resistencia: V/Ω, función Ω y componente/circuito sin tensión externa.'},
+ {title:'Consumo de un LED',context:'Un LED con resistencia serie trabaja a unos pocos miliamperios y quiere medir su corriente.',target:{borne:'ma',funcion:'adc',conexion:'serie',estado:'energizado'},why:'Corriente DC pequeña: borne mA, A⎓ e instrumento insertado en serie.'},
+ {title:'Fusible sospechoso',context:'El equipo está desconectado y desea saber si un fusible está abierto.',target:{borne:'vohm',funcion:'continuidad',conexion:'componente',estado:'desenergizado'},why:'Continuidad se verifica sin energía externa usando COM + V/Ω.'},
+ {title:'Diodo de silicio',context:'Desea comprobar caída directa y comportamiento inverso de un diodo.',target:{borne:'vohm',funcion:'diodo',conexion:'componente',estado:'desenergizado'},why:'Función diodo, V/Ω y componente sin alimentación externa.'},
+ {title:'Salida de 24 VAC',context:'Una fuente aislada de laboratorio entrega 24 VAC y desea comprobarla.',target:{borne:'vohm',funcion:'vac',conexion:'paralelo',estado:'energizado'},why:'Voltaje AC: V~, V/Ω y conexión en paralelo.'},
+ {title:'Capacitor de 100 µF',context:'El capacitor fue retirado del circuito y descargado correctamente.',target:{borne:'vohm',funcion:'cap',conexion:'componente',estado:'desenergizado'},why:'Capacitancia: capacitor descargado, función de capacitancia y entrada V/Ω según el modelo.'}
+];
+let missionIndex=0,score=0,lives=3,completed=0,streak=0;
+function renderMission(){
+  const m=missions[missionIndex];
+  const t=document.getElementById('missionTitle'),c=document.getElementById('missionContext');
+  if(!t)return;
+  t.textContent=`Reto ${missionIndex+1}: ${m.title}`;
+  c.textContent=m.context;
+  document.getElementById('gameFeedback').className='game-feedback';
+  document.getElementById('gameFeedback').textContent='';
+  updateGameHud();
+}
+function updateGameHud(){
+  const s=document.getElementById('gameScore'); if(!s)return;
+  s.textContent=score; document.getElementById('gameLives').textContent='♥'.repeat(Math.max(lives,0))+'♡'.repeat(Math.max(0,3-lives));
+  document.getElementById('gameLevel').textContent=`${missionIndex+1}/${missions.length}`;
+  document.getElementById('missionProgressFill').style.width=((completed/missions.length)*100)+'%';
+  updateAchievements();
+}
+function checkMission(){
+  const m=missions[missionIndex],fb=document.getElementById('gameFeedback');
+  const ans={
+    borne:document.getElementById('gameBorne').value,
+    funcion:document.getElementById('gameFuncion').value,
+    conexion:document.getElementById('gameConexion').value,
+    estado:document.getElementById('gameEstado').value
+  };
+  const ok=Object.keys(m.target).every(k=>m.target[k]===ans[k]);
+  if(ok){
+    score+=100+(streak*20); streak++; if(completed<=missionIndex)completed=missionIndex+1;
+    fb.className='game-feedback ok'; fb.textContent='✅ Configuración correcta. '+m.why;
+  }else{
+    lives--; streak=0;
+    fb.className='game-feedback bad';
+    if(ans.funcion==='adc' && ans.conexion==='paralelo') fb.textContent='⛔ Peligro: está configurando un amperímetro en paralelo. Eso puede crear una ruta de muy baja resistencia.';
+    else if(ans.funcion==='ohm' && ans.estado==='energizado') fb.textContent='⛔ No mida resistencia con tensión externa aplicada.';
+    else if(ans.borne==='10a' && ['vdc','vac','ohm','continuidad','diodo','cap'].includes(ans.funcion)) fb.textContent='⛔ Revise el borne rojo: 10 A no corresponde a esta medición.';
+    else fb.textContent='❌ Hay al menos una selección incorrecta. Revise borne, función, conexión y estado del circuito.';
+    if(lives<=0){fb.textContent+=' Sin vidas: reinicie la misión para continuar.';}
+  }
+  updateGameHud();
+}
+function nextMission(){
+  if(lives<=0)return;
+  missionIndex=(missionIndex+1)%missions.length; renderMission();
+}
+function resetGame(){
+  missionIndex=0;score=0;lives=3;completed=0;streak=0;renderMission();
+}
+function toggleDiagnosis(id){
+  const e=document.getElementById(id); if(e)e.classList.toggle('show');
+}
+function updateAchievements(){
+  const a1=document.getElementById('ach1'),a2=document.getElementById('ach2'),a3=document.getElementById('ach3'),a4=document.getElementById('ach4');
+  if(!a1)return;
+  a1.classList.toggle('unlocked',score>=100);
+  a2.classList.toggle('unlocked',score>=300);
+  a3.classList.toggle('unlocked',completed>=5);
+  a4.classList.toggle('unlocked',completed>=missions.length);
+}
+document.addEventListener('DOMContentLoaded',renderMission);
+
+
+/* ===== V3.2 SIMULATED MEASUREMENTS / RANDOM FAULTS ===== */
+const simScenarios = [
+  {name:'Fuente DC 12 V',kind:'vdc',nominal:12,unit:'V',tol:.08,faults:[
+    {name:'Sin falla',type:'normal',factor:1,desc:'La fuente entrega su valor nominal.'},
+    {name:'Baja tensión',type:'low',factor:.63,desc:'La fuente cae por regulación o carga excesiva.'},
+    {name:'Salida intermitente',type:'intermittent',factor:.92,desc:'La lectura fluctúa por falso contacto o soldadura.'},
+    {name:'Salida ausente',type:'open',factor:0,desc:'No hay tensión en la salida.'}
+  ]},
+  {name:'Resistencia 1 kΩ',kind:'ohm',nominal:1000,unit:'Ω',tol:.03,faults:[
+    {name:'Sin falla',type:'normal',factor:1,desc:'Valor dentro de tolerancia.'},
+    {name:'Abierta',type:'open',factor:999999,desc:'Elemento abierto: el instrumento puede mostrar OL.'},
+    {name:'Deriva alta',type:'high',factor:1.48,desc:'La resistencia aumentó fuera de tolerancia.'},
+    {name:'Casi en corto',type:'short',factor:.03,desc:'Valor anormalmente bajo.'}
+  ]},
+  {name:'LED con resistencia',kind:'adc',nominal:9.1,unit:'mA',tol:.06,faults:[
+    {name:'Sin falla',type:'normal',factor:1,desc:'Corriente coherente con el cálculo.'},
+    {name:'LED abierto',type:'open',factor:0,desc:'No circula corriente.'},
+    {name:'Resistencia elevada',type:'low',factor:.42,desc:'La corriente cae por aumento de resistencia serie.'},
+    {name:'Resistencia incorrecta',type:'high',factor:2.2,desc:'Corriente excesiva para el LED.'}
+  ]},
+  {name:'Diodo de silicio',kind:'diodo',nominal:.64,unit:'V',tol:.04,faults:[
+    {name:'Sin falla',type:'normal',factor:1,desc:'Caída directa típica.'},
+    {name:'Abierto',type:'open',factor:999999,desc:'No conduce en directa; puede mostrar OL.'},
+    {name:'En corto',type:'short',factor:.04,desc:'Caída casi nula en ambos sentidos.'},
+    {name:'Fuga / degradación',type:'high',factor:1.42,desc:'Caída anómala, requiere análisis adicional.'}
+  ]},
+  {name:'Capacitor 100 µF',kind:'cap',nominal:100,unit:'µF',tol:.08,faults:[
+    {name:'Sin falla',type:'normal',factor:1,desc:'Capacitancia dentro de tolerancia.'},
+    {name:'Capacitancia baja',type:'low',factor:.38,desc:'Pérdida importante de capacitancia.'},
+    {name:'Abierto',type:'open',factor:0,desc:'El instrumento no detecta capacitancia útil.'},
+    {name:'Deriva moderada',type:'low',factor:.73,desc:'Capacitancia reducida.'}
+  ]},
+  {name:'Fuente AC 24 V',kind:'vac',nominal:24,unit:'V',tol:.05,faults:[
+    {name:'Sin falla',type:'normal',factor:1,desc:'Salida AC nominal.'},
+    {name:'Secundario bajo',type:'low',factor:.72,desc:'Tensión AC inferior a la esperada.'},
+    {name:'Secundario abierto',type:'open',factor:0,desc:'Sin tensión de salida.'},
+    {name:'Regulación alta',type:'high',factor:1.18,desc:'Tensión superior a la nominal.'}
+  ]}
+];
+let simDifficulty='easy';
+let currentScenario=0;
+let currentFault=0;
+function setDifficulty(level){
+  simDifficulty=level;
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.toggle('active',b.dataset.level===level));
+  const label=document.getElementById('difficultyLabel'); if(label) label.textContent=level==='easy'?'Básico':level==='medium'?'Intermedio':'Avanzado';
+  randomizeFault(true);
+}
+function randomizeFault(forceScenario=false){
+  if(forceScenario || simDifficulty==='hard') currentScenario=Math.floor(Math.random()*simScenarios.length);
+  const scenario=simScenarios[currentScenario];
+  let pool=[0,1];
+  if(simDifficulty==='medium') pool=[0,1,2];
+  if(simDifficulty==='hard') pool=[0,1,2,3];
+  currentFault=pool[Math.floor(Math.random()*pool.length)];
+  renderSimScenario();
+}
+function selectScenario(i){
+  currentScenario=i; randomizeFault(false);
+}
+function renderSimScenario(){
+  const s=simScenarios[currentScenario],f=s.faults[currentFault];
+  const n=document.getElementById('simScenarioName'); if(!n)return;
+  n.textContent=s.name;
+  document.getElementById('faultHint').textContent = simDifficulty==='easy' ? ('Pista: '+f.desc) : simDifficulty==='medium' ? 'Pista limitada: compare la lectura con el valor esperado.' : 'Sin pista. Diagnostique con criterio.';
+  document.getElementById('expectedValue').textContent = formatNominal(s);
+  document.getElementById('simDisplay').innerHTML='---- <span class="virtual-unit">'+s.unit+'</span>';
+  document.getElementById('measureFeedback').className='measure-feedback';
+  document.getElementById('measureFeedback').textContent='';
+}
+function formatNominal(s){
+  if(s.kind==='ohm')return '≈ 1.00 kΩ';
+  return '≈ '+s.nominal+' '+s.unit;
+}
+function doMeasurement(){
+  const s=simScenarios[currentScenario],f=s.faults[currentFault];
+  const mode=document.getElementById('simMode').value;
+  const connection=document.getElementById('simConnection').value;
+  const state=document.getElementById('simState').value;
+  const fb=document.getElementById('measureFeedback');
+  let correctMode = (mode===s.kind);
+  let correctConnection = ['vdc','vac'].includes(s.kind) ? connection==='paralelo' :
+                          s.kind==='adc' ? connection==='serie' :
+                          connection==='componente';
+  let correctState = ['ohm','diodo','cap'].includes(s.kind) ? state==='desenergizado' : state==='energizado';
+
+  if(mode==='adc' && connection==='paralelo'){
+    fb.className='measure-feedback bad'; fb.textContent='⛔ Configuración peligrosa: amperímetro en paralelo. No se realiza la medición.'; return;
+  }
+  if(['ohm','diodo','cap'].includes(mode) && state==='energizado'){
+    fb.className='measure-feedback bad'; fb.textContent='⛔ No aplique esta función con el circuito energizado.'; return;
+  }
+  if(!(correctMode&&correctConnection&&correctState)){
+    fb.className='measure-feedback warn'; fb.textContent='⚠ La medición se ejecutó con una configuración incoherente. Revise función, conexión y estado.';
+  }else{
+    fb.className='measure-feedback ok'; fb.textContent='✅ Configuración correcta. Interprete la lectura antes de revelar la falla.';
+  }
+
+  let value;
+  if(f.type==='open' && ['ohm','diodo'].includes(s.kind)){
+    document.getElementById('simDisplay').innerHTML='OL <span class="virtual-unit"></span>';
+    return;
+  }
+  let noise = 1 + ((Math.random()-.5) * (simDifficulty==='easy'?.01:simDifficulty==='medium'?.03:.06));
+  if(f.type==='intermittent') noise = 0.78 + Math.random()*.36;
+  value=s.nominal*f.factor*noise;
+  let digits = s.nominal<2?3:(s.nominal<50?2:1);
+  if(s.kind==='ohm'){
+    if(value>100000){document.getElementById('simDisplay').innerHTML='OL';return;}
+    if(value>=1000) document.getElementById('simDisplay').innerHTML=(value/1000).toFixed(2)+' <span class="virtual-unit">kΩ</span>';
+    else document.getElementById('simDisplay').innerHTML=value.toFixed(1)+' <span class="virtual-unit">Ω</span>';
+  } else {
+    document.getElementById('simDisplay').innerHTML=value.toFixed(digits)+' <span class="virtual-unit">'+s.unit+'</span>';
+  }
+}
+function revealFault(){
+  const s=simScenarios[currentScenario],f=s.faults[currentFault];
+  const fb=document.getElementById('measureFeedback');
+  fb.className='measure-feedback ok';
+  fb.textContent='🔎 Diagnóstico: '+f.name+'. '+f.desc;
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  if(document.getElementById('simScenarioName')){
+    setDifficulty('easy');
+  }
+});

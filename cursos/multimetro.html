@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multímetro Digital · Academia de Electrónica</title>
+<link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+<header class="course-top">
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="container">
+    <a href="../index.html">← Academia de Electrónica</a>
+    <span class="course-progress-label">Curso · Multímetro Digital</span>
+  </div>
+</header>
+
+<section class="course-hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">INSTRUMENTACIÓN · NIVEL BÁSICO–INTERMEDIO</span>
+      <h1>Domine el multímetro antes de tocar el circuito.</h1>
+      <p>Capacitación visual y práctica aplicable a multímetros digitales Fluke, UNI-T y equipos equivalentes. El objetivo no es “mover la perilla”: es entender qué se mide, cómo se conecta y qué puede salir mal.</p>
+      <div class="hero-stat-row">
+        <div class="hero-stat">⚡ Voltaje AC/DC</div><div class="hero-stat">Ω Resistencia</div>
+        <div class="hero-stat">→| Diodos</div><div class="hero-stat">A Corriente</div>
+        <div class="hero-stat">🔊 Continuidad</div><div class="hero-stat">▯ Capacitancia</div>
+      </div>
+    </div>
+    <div class="meter-stage" aria-label="Ilustración didáctica de multímetro">
+      <div class="meter-illustration">
+        <span class="meter-brand">DMM · TRUE RMS</span>
+        <div class="meter-screen">12.04 V</div>
+        <div class="meter-buttons"><i></i><i></i><i></i><i></i></div>
+        <div class="meter-dial"></div>
+        <div class="meter-jacks"><span class="jack red"></span><span class="jack"></span><span class="jack"></span><span class="jack red"></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="container course-shell">
+<aside class="side-nav">
+  <strong>Contenido</strong>
+  <a href="#modelos">01 · Equipos de referencia</a>
+  <a href="#partes">02 · Partes y bornes</a>
+  <a href="#simbolos">03 · Símbolos</a>
+  <a href="#voltaje">04 · Voltaje DC/AC</a>
+  <a href="#resistencia">05 · Resistencia</a>
+  <a href="#continuidad">06 · Continuidad</a>
+  <a href="#diodos">07 · Diodos</a>
+  <a href="#corriente">08 · Corriente</a>
+  <a href="#capacitancia">09 · Capacitancia</a>
+  <a href="#errores">10 · Errores críticos</a>
+  <a href="#explorador">11 · Multímetro interactivo</a>
+  <a href="#simulaciones">12 · Mediciones simuladas</a>
+  <a href="#videojuego">13 · Videojuego de medición</a>
+  <a href="#diagnostico-game">14 · Diagnóstico</a>
+  <a href="#simulador">15 · Simulador rápido</a>
+  <a href="#practicas">16 · Laboratorio</a>
+  <a href="#quiz">17 · Evaluación</a>
+  <a href="#regla">18 · Regla de oro</a>
+</aside>
+
+<main>
+<section class="lesson" id="modelos">
+<span class="lesson-number">01 · EQUIPOS DE REFERENCIA</span>
+<h2>Dos familias que encontrará con frecuencia</h2>
+<p class="lead">La ubicación exacta de funciones y bornes cambia según el modelo. Por eso el aprendiz debe aprender a leer el instrumento, no memorizar una sola carcasa.</p>
+<div class="photo-grid">
+  <figure class="photo-card">
+    <img src="https://instrotech.com/media/catalog/product/cache/019c69a266c636a7f1281a46a2fb554a/f/l/flu117.jpg" alt="Multímetro Fluke 117" loading="lazy">
+    <figcaption><strong>Fluke 117</strong> · Ejemplo de multímetro profesional con selector rotativo y entradas inferiores. Imagen remota de referencia.</figcaption>
+  </figure>
+  <figure class="photo-card">
+    <img src="https://img.joomcdn.net/586e8e44809e0384cd6eb4e2d77193f029f30c12_original.jpeg" alt="Multímetro UNI-T UT61E" loading="lazy">
+    <figcaption><strong>UNI-T UT61E</strong> · Ejemplo de distribución con cuatro bornes y múltiples funciones. Imagen remota de referencia.</figcaption>
+  </figure>
+</div>
+<div class="callout info"><strong>Nota:</strong> si el computador no tiene Internet, estas dos fotografías externas pueden no cargar. El resto del curso y los diagramas sí funcionan localmente.</div>
+</section>
+
+<section class="lesson" id="partes">
+<span class="lesson-number">02 · PARTES Y BORNES</span>
+<h2>Antes de medir, aprenda a leer el equipo</h2>
+<div class="grid-3">
+ <div class="info-card"><div class="big-symbol">LCD</div><h3>Pantalla</h3><p>Valor, unidad, polaridad, AUTO, HOLD, OL y otros indicadores.</p></div>
+ <div class="info-card"><div class="big-symbol">◉</div><h3>Selector</h3><p>Define la función: V, A, Ω, continuidad, diodo, Hz, capacitancia, etc.</p></div>
+ <div class="info-card"><div class="big-symbol">COM</div><h3>Común</h3><p>Normalmente recibe la punta negra y sirve como referencia.</p></div>
+ <div class="info-card"><div class="big-symbol">VΩ</div><h3>Entrada V/Ω</h3><p>Punta roja para voltaje, resistencia, continuidad, diodo y funciones asociadas.</p></div>
+ <div class="info-card"><div class="big-symbol">mA</div><h3>Entrada µA/mA</h3><p>Corrientes pequeñas dentro del límite y protección especificados por el fabricante.</p></div>
+ <div class="info-card"><div class="big-symbol">10A</div><h3>Entrada A</h3><p>Corrientes mayores. No significa que soporte 10 A indefinidamente.</p></div>
+</div>
+<div class="callout danger"><strong>Error crítico:</strong> si la punta roja queda en el borne de corriente y después se intenta medir voltaje en paralelo, el circuito interno de corriente puede presentar una impedancia muy baja. Puede fundirse un fusible, aparecer una chispa o dañarse la fuente/instrumento.</div>
+</section>
+
+<section class="lesson" id="simbolos">
+<span class="lesson-number">03 · SÍMBOLOS</span>
+<h2>El idioma del multímetro</h2>
+<div class="table-wrap"><table>
+<tr><th>Símbolo</th><th>Nombre</th><th>Mide</th><th>Unidad</th><th>Conexión</th><th>Precaución</th></tr>
+<tr><td>V⎓</td><td>Voltaje DC</td><td>Diferencia de potencial continua</td><td>V</td><td>Paralelo</td><td>Seleccione rango adecuado</td></tr>
+<tr><td>V~</td><td>Voltaje AC</td><td>Diferencia de potencial alterna</td><td>V</td><td>Paralelo</td><td>Atención a tensiones peligrosas</td></tr>
+<tr><td>A⎓ / A~</td><td>Corriente</td><td>Flujo de corriente</td><td>A</td><td>Serie</td><td>Nunca directamente sobre una fuente</td></tr>
+<tr><td>Ω</td><td>Resistencia</td><td>Oposición eléctrica</td><td>Ω</td><td>Desenergizado</td><td>No aplicar tensión externa</td></tr>
+<tr><td>🔊</td><td>Continuidad</td><td>Camino de baja R</td><td>Ω / pitido</td><td>Desenergizado</td><td>Pitido ≠ corto automáticamente</td></tr>
+<tr><td>→|</td><td>Diodo</td><td>Caída directa</td><td>V</td><td>Sobre semiconductor</td><td>Interpretar polaridad</td></tr>
+<tr><td>▯</td><td>Capacitancia</td><td>Capacidad</td><td>F</td><td>Capacitor descargado</td><td>Descargar previamente</td></tr>
+<tr><td>Hz</td><td>Frecuencia</td><td>Ciclos por segundo</td><td>Hz</td><td>Señal</td><td>Respetar límites de entrada</td></tr>
+<tr><td>%</td><td>Duty cycle</td><td>Ciclo de trabajo</td><td>%</td><td>Señal</td><td>Revisar rango</td></tr>
+</table></div>
+</section>
+
+<section class="lesson" id="voltaje">
+<span class="lesson-number">04 · VOLTAJE</span><h2>Voltaje: siempre piense “entre dos puntos”</h2>
+<div class="visual-compare">
+ <div class="diagram correct"><h3>✅ Correcto · Paralelo</h3><div class="circuit">+12 V ──────[ CARGA ]────── GND
+   │                     │
+   └───────( V )─────────┘</div><p>El voltímetro observa la diferencia de potencial sin convertirse en el camino principal de corriente.</p></div>
+ <div class="diagram wrong"><h3>❌ Incorrecto · Serie</h3><div class="circuit">+12 V ────( V )────[ CARGA ]──── GND</div><p>La conexión no representa la forma normal de medir el voltaje de una carga.</p></div>
+</div>
+<h3>Práctica escalonada</h3>
+<ol class="step-list">
+<li>Punta negra a <b>COM</b>.</li><li>Punta roja a <b>V/Ω</b>.</li><li>Seleccione <b>V⎓</b> para pila/fuente DC o <b>V~</b> para AC.</li>
+<li>Estime el valor esperado: 1.5 V, 5 V, 9 V, 12 V...</li><li>Conecte en paralelo y lea valor/unidad.</li><li>Si DC aparece negativo, la polaridad está invertida respecto a sus puntas.</li>
+</ol>
+<div class="callout warning"><strong>Formación inicial:</strong> para AC, comience con 12 VAC o 24 VAC. El trabajo sobre red requiere instrumento, puntas, categoría de medición, procedimiento y supervisión apropiados.</div>
+</section>
+
+<section class="lesson" id="resistencia">
+<span class="lesson-number">05 · RESISTENCIA</span><h2>Ω: el multímetro aplica su propia señal de prueba</h2>
+<div class="callout danger"><strong>No mida resistencia en un circuito energizado.</strong> Una tensión externa altera la prueba y puede sobrecargar el instrumento.</div>
+<div class="grid-2">
+<div class="info-card"><h3>10 kΩ ±5 %</h3><p>Intervalo nominal aproximado: <b>9.5 kΩ a 10.5 kΩ</b>. Una lectura de 9.82 kΩ puede ser totalmente normal.</p></div>
+<div class="info-card"><h3>OL</h3><p>Según el contexto puede significar circuito abierto o resistencia superior al rango seleccionado.</p></div>
+</div>
+</section>
+
+<section class="lesson" id="continuidad">
+<span class="lesson-number">06 · CONTINUIDAD</span><h2>El pitido responde una pregunta rápida</h2>
+<p class="lead">¿Existe entre esos dos puntos un camino de resistencia suficientemente baja para el umbral del multímetro?</p>
+<div class="grid-3">
+<div class="lab-card"><span class="lab-n">APLICACIÓN</span><h4>Cable</h4><p>Compruebe continuidad entre ambos extremos y flexione suavemente para detectar fallas intermitentes.</p></div>
+<div class="lab-card"><span class="lab-n">APLICACIÓN</span><h4>Fusible</h4><p>Desenergizado: continuidad baja suele indicar filamento íntegro; OL sugiere abierto.</p></div>
+<div class="lab-card"><span class="lab-n">APLICACIÓN</span><h4>PCB</h4><p>Permite seguir pistas y verificar uniones, siempre interpretando las rutas paralelas del circuito.</p></div>
+</div>
+</section>
+
+<section class="lesson" id="diodos">
+<span class="lesson-number">07 · DIODOS</span><h2>Polarización directa e inversa</h2>
+<div class="table-wrap"><table>
+<tr><th>Componente</th><th>Directa típica orientativa</th><th>Inversa</th></tr>
+<tr><td>Silicio</td><td>≈ 0.55–0.75 V</td><td>Normalmente OL</td></tr>
+<tr><td>Schottky</td><td>≈ 0.15–0.45 V</td><td>Normalmente OL</td></tr>
+<tr><td>LED</td><td>≈ 1.6–3.3 V o más, según tecnología</td><td>Normalmente OL</td></tr>
+</table></div>
+<div class="callout info">En circuito pueden existir caminos paralelos. Para un diagnóstico concluyente puede ser necesario aislar una terminal del componente.</div>
+</section>
+
+<section class="lesson" id="corriente">
+<span class="lesson-number">08 · CORRIENTE</span><h2>La medición que más disciplina exige</h2>
+<div class="visual-compare">
+<div class="diagram correct"><h3>✅ EN SERIE</h3><div class="circuit">+5 V ──( A )──330 Ω──|>|── GND</div><p>La corriente del circuito atraviesa el instrumento.</p></div>
+<div class="diagram wrong"><h3>❌ EN PARALELO</h3><div class="circuit">+5 V ─────┬──── CARGA ─── GND
+          └──( A )───────┘</div><p>El shunt de corriente puede comportarse como una ruta de muy baja resistencia.</p></div>
+</div>
+<div class="callout danger"><strong>Regla:</strong> nunca coloque un multímetro configurado como amperímetro directamente entre +V y GND.</div>
+<h3>Ejemplo LED</h3><p>Con 5 V, LED ≈2 V y resistencia de 330 Ω, la estimación ideal es I=(5−2)/330 ≈ <b>9.1 mA</b>. Primero estime; después mida.</p>
+</section>
+
+<section class="lesson" id="capacitancia">
+<span class="lesson-number">09 · CAPACITANCIA</span><h2>Primero descargar, después medir</h2>
+<div class="grid-2">
+<div class="info-card"><h3>Conversión</h3><p>1 mF = 1000 µF<br>1 µF = 1000 nF<br>1 nF = 1000 pF</p></div>
+<div class="info-card"><h3>Diagnóstico</h3><p>La capacitancia medida debe compararse con la tolerancia. Esta función no sustituye una prueba de ESR cuando sea necesaria.</p></div>
+</div>
+</section>
+
+<section class="lesson" id="errores">
+<span class="lesson-number">10 · ERRORES CRÍTICOS</span><h2>Errores que el aprendiz debe reconocer antes de cometerlos</h2>
+<div class="table-wrap"><table>
+<tr><th>Error</th><th>Qué ocurre</th><th>Riesgo</th><th>Forma correcta</th></tr>
+<tr><td>Medir V con punta roja en A/10 A</td><td>Entrada de corriente usada como si fuera voltímetro</td><td>Alto</td><td>COM + V/Ω</td></tr>
+<tr><td>Medir corriente en paralelo</td><td>Ruta de muy baja resistencia</td><td>Muy alto</td><td>Abrir circuito e insertar en serie</td></tr>
+<tr><td>Ω con circuito energizado</td><td>Tensión externa altera prueba</td><td>Alto</td><td>Desenergizar y verificar</td></tr>
+<tr><td>Confundir mA con A</td><td>Error de factor 1000</td><td>Alto</td><td>Revisar unidad y borne</td></tr>
+<tr><td>Puntas deterioradas</td><td>Aislamiento comprometido</td><td>Alto</td><td>Retirar de servicio</td></tr>
+</table></div>
+</section>
+
+
+<section class="lesson interactive-zone" id="explorador">
+<span class="lesson-number">11 · MULTÍMETRO INTERACTIVO</span>
+<h2>Toque el instrumento y descubra qué hace cada zona</h2>
+<p class="lead">Proyecte esta sección en clase. Pídale a un aprendiz que identifique una parte antes de hacer clic sobre ella.</p>
+
+<div class="multimeter-lab">
+  <div class="hotspot-meter">
+    <div class="training-meter">
+      <div class="brandline"><span class="brandbox">DMM</span><span class="modelbox">TRAINING METER</span></div>
+      <div class="screen">0.000 V</div>
+      <div class="softkeys"><span></span><span></span><span></span><span></span></div>
+      <div class="selector-panel">
+        <span class="dial-label d1">V⎓</span><span class="dial-label d2">V~</span><span class="dial-label d3">Ω</span>
+        <span class="dial-label d4">→|</span><span class="dial-label d5">A</span><span class="dial-label d6">Hz</span>
+        <div class="dial"></div>
+      </div>
+      <div class="jack-row">
+        <div class="jack-wrap">10 A<div class="jackhole red"></div></div>
+        <div class="jack-wrap">mA<div class="jackhole red"></div></div>
+        <div class="jack-wrap">COM<div class="jackhole"></div></div>
+        <div class="jack-wrap">V Ω<div class="jackhole red"></div></div>
+      </div>
+
+      <button class="hotspot hs-screen" aria-label="Pantalla" onclick="selectMeterPart('screen')"></button>
+      <button class="hotspot hs-buttons" aria-label="Botones" onclick="selectMeterPart('buttons')"></button>
+      <button class="hotspot hs-selector" aria-label="Selector" onclick="selectMeterPart('selector')"></button>
+      <button class="hotspot hs-jack10" aria-label="Borne 10 amperios" onclick="selectMeterPart('jack10')"></button>
+      <button class="hotspot hs-jackma" aria-label="Borne miliamperios" onclick="selectMeterPart('jackma')"></button>
+      <button class="hotspot hs-jackcom" aria-label="Borne COM" onclick="selectMeterPart('jackcom')"></button>
+      <button class="hotspot hs-jackvohm" aria-label="Borne V ohmios" onclick="selectMeterPart('jackvohm')"></button>
+    </div>
+  </div>
+
+  <div class="hotspot-panel">
+    <span class="selected-part" id="partTag">EMPIECE AQUÍ</span>
+    <h3 id="partName">Seleccione una zona del multímetro</h3>
+    <p id="partDesc">Los círculos resaltados corresponden a partes importantes del instrumento. Haga clic sobre pantalla, selector, botones o bornes.</p>
+    <div class="fact-grid">
+      <div class="fact"><small>¿Para qué sirve?</small><b id="partUse">—</b></div>
+      <div class="fact"><small>Error típico</small><b id="partRisk">—</b></div>
+    </div>
+    <div class="callout success"><strong>Regla práctica:</strong> <span id="partRule">Primero identifique la magnitud y después configure el multímetro.</span></div>
+  </div>
+</div>
+</section>
+
+
+<section class="lesson" id="simulaciones">
+<span class="lesson-number">12 · MEDICIONES SIMULADAS</span>
+<h2>Banco virtual de medición con fallas aleatorias</h2>
+<p class="lead">Esta sección cambia la condición del circuito automáticamente. El aprendiz debe configurar el multímetro, ejecutar la medición y decidir si la lectura es normal o corresponde a una falla.</p>
+
+<div class="difficulty-guide">
+  <div class="diff-card easy"><h4>Básico</h4><p>Menos tipos de falla, pistas claras y variación pequeña en la lectura.</p></div>
+  <div class="diff-card mid"><h4>Intermedio</h4><p>Más fallas posibles, pistas limitadas y mayor dispersión en los valores.</p></div>
+  <div class="diff-card hard"><h4>Avanzado</h4><p>Escenario y falla aleatorios, sin pistas directas y con lecturas más variables.</p></div>
+</div>
+
+<div class="level-tabs">
+  <button class="level-btn active" data-level="easy" onclick="setDifficulty('easy')">Nivel básico</button>
+  <button class="level-btn" data-level="medium" onclick="setDifficulty('medium')">Nivel intermedio</button>
+  <button class="level-btn" data-level="hard" onclick="setDifficulty('hard')">Nivel avanzado</button>
+</div>
+
+<div class="sim-console">
+  <div class="sim-head">
+    <h3 id="simScenarioName">Fuente DC 12 V</h3>
+    <div class="sim-status">
+      <span class="sim-badge">Dificultad: <b id="difficultyLabel">Básico</b></span>
+      <span class="sim-badge mag">Valor esperado: <b id="expectedValue">≈ 12 V</b></span>
+    </div>
+  </div>
+
+  <div class="instrument-grid">
+    <div class="virtual-circuit">
+      <h4>Escenario de laboratorio</h4>
+      <p id="faultHint">Pista: compare la lectura con el valor nominal.</p>
+
+      <div class="scenario-list">
+        <div class="scenario-chip" onclick="selectScenario(0)"><b>12 V DC</b><small>Fuente de laboratorio</small></div>
+        <div class="scenario-chip" onclick="selectScenario(1)"><b>1 kΩ</b><small>Resistencia</small></div>
+        <div class="scenario-chip" onclick="selectScenario(2)"><b>LED</b><small>Corriente de consumo</small></div>
+        <div class="scenario-chip" onclick="selectScenario(3)"><b>Diodo</b><small>Caída directa</small></div>
+        <div class="scenario-chip" onclick="selectScenario(4)"><b>100 µF</b><small>Capacitor</small></div>
+        <div class="scenario-chip" onclick="selectScenario(5)"><b>24 VAC</b><small>Fuente alterna</small></div>
+      </div>
+
+      <div class="fault-panel">
+        <button class="randomize-btn" onclick="randomizeFault(true)">⚡ Generar falla aleatoria</button>
+      </div>
+    </div>
+
+    <div class="virtual-meter">
+      <h4>Multímetro virtual</h4>
+      <div class="virtual-display" id="simDisplay">---- <span class="virtual-unit">V</span></div>
+
+      <div class="measurement-controls">
+        <div><label>Función</label>
+          <select id="simMode">
+            <option value="vdc">V⎓</option><option value="vac">V~</option><option value="adc">A⎓</option>
+            <option value="ohm">Ω</option><option value="diodo">Diodo</option><option value="cap">Capacitancia</option>
+          </select>
+        </div>
+        <div><label>Conexión</label>
+          <select id="simConnection">
+            <option value="paralelo">Paralelo</option><option value="serie">Serie</option><option value="componente">Sobre componente</option>
+          </select>
+        </div>
+        <div><label>Estado del circuito</label>
+          <select id="simState"><option value="energizado">Energizado</option><option value="desenergizado">Desenergizado</option></select>
+        </div>
+        <div><label>Objetivo</label>
+          <input type="text" value="Obtenga la lectura y diagnostique" readonly>
+        </div>
+      </div>
+
+      <button class="measure-btn" onclick="doMeasurement()">REALIZAR MEDICIÓN</button>
+      <div id="measureFeedback" class="measure-feedback"></div>
+
+      <div class="game-controls">
+        <button class="btn-game btn-next" onclick="revealFault()">Revelar falla</button>
+        <button class="btn-game btn-reset" onclick="randomizeFault(true)">Nuevo caso</button>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section class="lesson" id="videojuego">
+<span class="lesson-number">13 · VIDEOJUEGO DE MEDICIÓN</span>
+<h2>Misión: configure el multímetro sin quemar nada</h2>
+<p class="lead">Cada reto exige escoger cuatro cosas: <b>borne rojo, función, conexión y estado del circuito</b>. Una configuración segura y correcta suma puntos.</p>
+
+<div class="mission-board">
+  <div class="mission-head">
+    <h3>⚡ Multimeter Challenge</h3>
+    <div class="scorebox">
+      <span class="score-chip">Puntos: <b id="gameScore">0</b></span>
+      <span class="score-chip">Reto: <b id="gameLevel">1/7</b></span>
+      <span class="score-chip lives">Vidas: <b id="gameLives">♥♥♥</b></span>
+    </div>
+  </div>
+
+  <div class="mission-card">
+    <div class="mission-title" id="missionTitle">Reto 1</div>
+    <p class="mission-context" id="missionContext"></p>
+
+    <div class="game-grid">
+      <div class="game-field"><label>Borne rojo</label>
+        <select id="gameBorne"><option value="vohm">V / Ω</option><option value="ma">µA / mA</option><option value="10a">A / 10 A</option></select>
+      </div>
+      <div class="game-field"><label>Función</label>
+        <select id="gameFuncion"><option value="vdc">V⎓</option><option value="vac">V~</option><option value="adc">A⎓</option><option value="ohm">Ω</option><option value="continuidad">Continuidad</option><option value="diodo">Diodo</option><option value="cap">Capacitancia</option></select>
+      </div>
+      <div class="game-field"><label>Conexión</label>
+        <select id="gameConexion"><option value="paralelo">Paralelo</option><option value="serie">Serie</option><option value="componente">Sobre componente / entre terminales</option></select>
+      </div>
+      <div class="game-field"><label>Estado</label>
+        <select id="gameEstado"><option value="energizado">Energizado</option><option value="desenergizado">Desenergizado</option></select>
+      </div>
+    </div>
+
+    <div class="game-controls">
+      <button class="btn-game btn-check" onclick="checkMission()">Comprobar</button>
+      <button class="btn-game btn-next" onclick="nextMission()">Siguiente reto →</button>
+      <button class="btn-game btn-reset" onclick="resetGame()">Reiniciar partida</button>
+    </div>
+
+    <div id="gameFeedback" class="game-feedback"></div>
+  </div>
+
+  <div class="mission-progress"><i id="missionProgressFill"></i></div>
+</div>
+
+<h3>Insignias</h3>
+<div class="badge-wall">
+  <div class="achievement" id="ach1"><div class="medal">🥉</div><strong>Primera medición</strong><small>100 puntos</small></div>
+  <div class="achievement" id="ach2"><div class="medal">🥈</div><strong>Configurador</strong><small>300 puntos</small></div>
+  <div class="achievement" id="ach3"><div class="medal">🥇</div><strong>Técnico seguro</strong><small>5 retos</small></div>
+  <div class="achievement" id="ach4"><div class="medal">🏆</div><strong>Maestro del DMM</strong><small>Todos los retos</small></div>
+</div>
+</section>
+
+<section class="lesson" id="diagnostico-game">
+<span class="lesson-number">14 · DIAGNÓSTICO INTERACTIVO</span>
+<h2>¿Qué mediría primero?</h2>
+<p class="lead">El objetivo no es adivinar la falla. Es escoger la <b>primera medición lógica</b> que reduzca la incertidumbre.</p>
+
+<div class="diagnostic-grid">
+  <div class="diagnostic-card">
+    <span class="lab-n">CASO 01</span><h4>La fuente dice 12 V, pero la tarjeta no enciende</h4>
+    <p>¿Qué comprobaría antes de desarmar media tarjeta?</p>
+    <button class="reveal-btn" onclick="toggleDiagnosis('d1')">Mostrar criterio</button>
+    <div class="diagnostic-answer" id="d1"><b>Voltaje DC en la salida de la fuente y luego en la entrada de la PCB.</b> Primero confirme que la energía realmente llega.</div>
+  </div>
+  <div class="diagnostic-card">
+    <span class="lab-n">CASO 02</span><h4>Fusible aparentemente bueno</h4>
+    <p>Visualmente se ve intacto, pero el equipo sigue muerto.</p>
+    <button class="reveal-btn" onclick="toggleDiagnosis('d2')">Mostrar criterio</button>
+    <div class="diagnostic-answer" id="d2"><b>Continuidad con el circuito desenergizado.</b> Una inspección visual no reemplaza la comprobación eléctrica.</div>
+  </div>
+  <div class="diagnostic-card">
+    <span class="lab-n">CASO 03</span><h4>Un cable falla cuando se mueve</h4>
+    <p>Funciona a veces y a veces no.</p>
+    <button class="reveal-btn" onclick="toggleDiagnosis('d3')">Mostrar criterio</button>
+    <div class="diagnostic-answer" id="d3"><b>Continuidad mientras se flexiona cuidadosamente el cable.</b> Busque una interrupción intermitente.</div>
+  </div>
+  <div class="diagnostic-card">
+    <span class="lab-n">CASO 04</span><h4>LED no enciende</h4>
+    <p>No sabe si el problema es el LED o la alimentación.</p>
+    <button class="reveal-btn" onclick="toggleDiagnosis('d4')">Mostrar criterio</button>
+    <div class="diagnostic-answer" id="d4"><b>Compruebe primero alimentación y luego función diodo sobre el LED.</b> Diagnóstico es secuencia, no intuición.</div>
+  </div>
+  <div class="diagnostic-card">
+    <span class="lab-n">CASO 05</span><h4>Regulador: 12 V entrada, 0 V salida</h4>
+    <p>¿Qué ruta lógica seguir?</p>
+    <button class="reveal-btn" onclick="toggleDiagnosis('d5')">Mostrar criterio</button>
+    <div class="diagnostic-answer" id="d5"><b>Verifique GND, salida respecto a GND, posible corto a la salida y condiciones de habilitación del regulador.</b></div>
+  </div>
+  <div class="diagnostic-card">
+    <span class="lab-n">CASO 06</span><h4>Resistencia de 10 kΩ mide 9.82 kΩ</h4>
+    <p>¿Está dañada?</p>
+    <button class="reveal-btn" onclick="toggleDiagnosis('d6')">Mostrar criterio</button>
+    <div class="diagnostic-answer" id="d6"><b>No necesariamente.</b> Compare con la tolerancia. Para ±5 %, 9.82 kΩ está dentro del intervalo nominal.</div>
+  </div>
+</div>
+</section>
+
+<section class="lesson" id="simulador">
+<span class="lesson-number">15 · SIMULADOR RÁPIDO</span><h2>Configure antes de conectar</h2>
+<p>El aprendiz debe lograr una combinación coherente entre objetivo, borne, función y forma de conexión.</p>
+<div class="simulator">
+<h3>¿Cómo configuraría el instrumento?</h3>
+<div class="sim-grid">
+<div class="sim-group"><label>Objetivo</label><select id="simObjetivo"><option value="12v">Medir fuente de 12 V DC</option><option value="res1k">Medir resistencia de 1 kΩ</option><option value="ledma">Medir corriente de un LED</option></select></div>
+<div class="sim-group"><label>Borne rojo</label><select id="simBorne"><option value="vohm">V/Ω</option><option value="ma">mA/µA</option><option value="10a">10 A</option></select></div>
+<div class="sim-group"><label>Función</label><select id="simFuncion"><option value="vdc">V⎓</option><option value="vac">V~</option><option value="ohm">Ω</option><option value="adc">A⎓</option></select></div>
+<div class="sim-group"><label>Conexión/estado</label><select id="simConexion"><option value="paralelo">Paralelo</option><option value="serie">Serie</option><option value="desenergizado">Componente desenergizado</option></select></div>
+</div>
+<div class="sim-actions"><button class="primary-btn" onclick="verificarSimulador()">Comprobar configuración</button><span id="simSalida" class="sim-result"></span></div>
+</div>
+</section>
+
+<section class="lesson" id="practicas">
+<span class="lesson-number">16 · LABORATORIO</span><h2>15 estaciones prácticas</h2>
+<div class="grid-3">
+<div class="lab-card"><span class="lab-n">ESTACIÓN 01</span><h4>Reconocimiento</h4><p>Identifique pantalla, selector, botones, bornes y límites impresos.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 02</span><h4>Pila AA</h4><p>Mida una pila de 1.5 V y registre polaridad.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 03</span><h4>Batería 9 V</h4><p>Compare valor nominal y lectura real.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 04</span><h4>Fuente 5 V</h4><p>Compruebe salida DC en paralelo.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 05</span><h4>Fuente 12 V</h4><p>Seleccione correctamente función y rango.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 06</span><h4>Resistencias</h4><p>Mida 100 Ω, 1 kΩ, 10 kΩ, 100 kΩ y 1 MΩ.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 07</span><h4>Cable</h4><p>Determine continuidad y falla intermitente.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 08</span><h4>Fusible</h4><p>Compruebe eléctricamente un fusible desenergizado.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 09</span><h4>Pulsador</h4><p>Identifique comportamiento NA/NC con continuidad.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 10</span><h4>Potenciómetro</h4><p>Mida resistencia total y variación del cursor.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 11</span><h4>Diodo</h4><p>Identifique directa, inversa, ánodo y cátodo.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 12</span><h4>LED</h4><p>Compruebe polaridad y caída directa.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 13</span><h4>Capacitor</h4><p>Descargue correctamente y mida capacitancia.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 14</span><h4>Corriente LED</h4><p>Inserte el amperímetro en serie y compare con cálculo.</p></div>
+<div class="lab-card"><span class="lab-n">ESTACIÓN 15</span><h4>Diagnóstico</h4><p>Siga alimentación de un circuito sencillo desde entrada hasta carga.</p></div>
+</div>
+</section>
+
+<section class="lesson" id="quiz">
+<span class="lesson-number">17 · EVALUACIÓN RÁPIDA</span><h2>Compruebe conceptos críticos</h2>
+<div class="quiz-question"><strong>1. ¿Cómo se mide el voltaje?</strong><div class="quiz-options"><button onclick="responder('q1',false,'El voltímetro no se inserta normalmente en serie.')">En serie</button><button onclick="responder('q1',true,'Se compara la diferencia de potencial entre dos puntos.')">En paralelo</button></div><div id="q1" class="result"></div></div>
+<div class="quiz-question"><strong>2. ¿Cómo se mide corriente?</strong><div class="quiz-options"><button onclick="responder('q2',true,'La corriente debe atravesar el instrumento.')">En serie</button><button onclick="responder('q2',false,'En paralelo puede provocar una condición de cortocircuito.')">En paralelo</button></div><div id="q2" class="result"></div></div>
+<div class="quiz-question"><strong>3. ¿Se puede medir resistencia con el circuito energizado?</strong><div class="quiz-options"><button onclick="responder('q3',false,'La medición de Ω usa una señal interna y no debe recibir tensión externa.')">Sí</button><button onclick="responder('q3',true,'Primero debe desenergizarse y verificarse el circuito.')">No</button></div><div id="q3" class="result"></div></div>
+<div class="quiz-question"><strong>4. Una lectura −8.9 V DC suele indicar:</strong><div class="quiz-options"><button onclick="responder('q4',true,'La referencia de polaridad de las puntas está invertida.')">Puntas invertidas</button><button onclick="responder('q4',false,'Una lectura negativa no implica por sí sola un fusible abierto.')">Fusible abierto</button></div><div id="q4" class="result"></div></div>
+</section>
+
+<section class="lesson" id="regla">
+<span class="lesson-number">18 · REGLA DE ORO</span><h2>La secuencia que debe volverse automática</h2>
+<div class="sticky-gold">
+<strong>ANTES DE TOCAR EL CIRCUITO:</strong>
+<div class="gold-list">
+<div><b>1.</b> ¿Qué voy a medir?</div><div><b>2.</b> ¿Es AC o DC?</div><div><b>3.</b> ¿Dónde están las puntas?</div><div><b>4.</b> ¿Qué función seleccioné?</div><div><b>5.</b> ¿Qué valor espero?</div><div><b>6.</b> ¿Energizado o desenergizado?</div><div><b>7.</b> Ahora sí: medir.</div>
+</div>
+</div>
+<div class="callout success"><strong>Pregunta del instructor:</strong> “¿Qué quiere medir, dónde va la punta negra, dónde va la roja, qué posición selecciona, serie o paralelo, y qué valor espera?” Si el aprendiz no puede responder antes de conectar, todavía no debe medir.</div>
+</section>
+</main>
+</div>
+
+<div class="signature-strip">
+  <div class="signature-inner">
+    <div>
+      <div class="signature-name">Diseño por Juan Sebastián Suárez Daza</div>
+      <div class="signature-title">Ingeniero Mecatrónico · Recurso didáctico de electrónica</div>
+    </div>
+    <div class="signature-version">CREADO · VERSIÓN 3.0</div>
+  </div>
+</div>
+<div class="neon-credit"><b>Juan Sebastián Suárez Daza</b><span>Ingeniero Mecatrónico · V3.0</span></div>
+
+<script src="../js/app.js"></script>
+</body>
+</html>
